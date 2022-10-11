@@ -153,7 +153,6 @@ func GetAllUsers(c *fiber.Ctx) error {
 
 func UserExcist(userid string) bool{
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	var user models.User
 	defer cancel()
 
 	objId, _ := primitive.ObjectIDFromHex(userid)
