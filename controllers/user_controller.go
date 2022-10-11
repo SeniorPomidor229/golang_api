@@ -36,6 +36,7 @@ func CreateUser(c *fiber.Ctx) error {
         Phone:     user.Phone,
         Password: user.Password,
         Subs:    true,
+		Anwers: []models.Message{},
     }
 
     result, err := userCollection.InsertOne(ctx, newUser)
@@ -156,7 +157,7 @@ func UserExcist(userid string) bool{
 	defer cancel()
 
 	objId, _ := primitive.ObjectIDFromHex(userid)
-	err := userCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&user)
+	err := userCollection.FindOne(ctx, bson.M{"id": objId})
 	if err == nil {
 		return true
 	} else {
