@@ -15,6 +15,8 @@ func main(){
         return c.JSON(&fiber.Map{"data": "Hello from Fiber & mongoDB"})
     })
   
+    routes.UserRoute(app)
+    
     configs.ConnectDB()
 
     app.Listen(":6000")
