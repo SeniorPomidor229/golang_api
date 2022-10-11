@@ -4,6 +4,7 @@ import(
 	"github.com/gofiber/fiber/v2"
 	
 	"workspace/configs"
+    "workspace/routes"
 )
 
 
