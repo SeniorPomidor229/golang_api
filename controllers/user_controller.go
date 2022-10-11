@@ -149,3 +149,17 @@ func GetAllUsers(c *fiber.Ctx) error {
         responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &fiber.Map{"data": users}},
     )
 }
+
+func UserExcist(userid string) bool{
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	var user models.User
+	defer cancel()
+
+	objId, _ := primitive.ObjectIDFromHex(userid)
+	err := userCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&user)
+	if err == nil {
+		return true
+	} else {
+		return false
+	}
+}

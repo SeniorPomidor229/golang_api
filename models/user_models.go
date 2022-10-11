@@ -6,5 +6,5 @@ type User struct {
     Id        primitive.ObjectID `json:"id,omitempty"`
     Phone     string             `json:"phone,omitempty" validate:"required"`
     Password  string             `json:"password,omitempty" validate:"required"`
-    Subs      bool               `json:"subs,omitempty" validate:"required"`
+    Subs      bool               `json:"subs,omitempty"`
 }
