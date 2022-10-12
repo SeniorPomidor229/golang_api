@@ -30,12 +30,8 @@ func CreateToken(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(responses.UserResponse{Status: http.StatusInternalServerError, Message: "erroe", Data: &fiber.Map{"data":err.Error()}})
 	} else{
-		token, err := utils.GenerateNewAccessToken()
-		if err == nil {
-			return c.Status(http.StatusInternalServerError).JSON(responses.UserResponse{Status: http.StatusInternalServerError, Message: "eror", Data: &fiber.Map{"data":err.Error()}})
-		} else{
-			return c.Status(http.StatusOK).JSON(responses.TokenResponse{Accsess_token: token, Token_type:"bearer"})
-		}
+		token, _ := utils.GenerateNewAccessToken()
+		return c.Status(http.StatusOK).JSON(responses.TokenResponse{Accsess_token: token, Token_type:"bearer"})
 	}
 
 }
