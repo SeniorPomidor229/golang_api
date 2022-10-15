@@ -1,7 +1,8 @@
 package routes
 
 import (
-	"workspace/controllers" 
+	"workspace/controllers"
+	"workspace/middleware" 
 
     "github.com/gofiber/fiber/v2"
 )
@@ -18,4 +19,6 @@ func UserRoute(app *fiber.App) {
 	app.Get("/Get/Users", controllers.GetAllUsers)
 
 	app.Post("/Token", controllers.CreateToken)
+
+	app.Post("/Create/Message/:userId", middleware.JWTProtected(), controllers.CreateMessage)
 }

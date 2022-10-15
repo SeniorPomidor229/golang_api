@@ -36,7 +36,7 @@ func CreateUser(c *fiber.Ctx) error {
         Phone:     user.Phone,
         Password: user.Password,
         Subs:    true,
-		Anwers: []models.Message{},
+		Answers: []models.Message{},
     }
 
     result, err := userCollection.InsertOne(ctx, newUser)

@@ -7,5 +7,5 @@ type User struct {
 	Phone    string             `json:"phone,omitempty" validate:"required"`
 	Password string             `json:"password,omitempty" validate:"required"`
 	Subs     bool               `json:"subs,omitempty"`
-	Anwers   []Message          `json:"answers,omitempty"`
+	Answers  []Message          `json:"answers,omitempty"`
 }

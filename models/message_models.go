@@ -4,5 +4,5 @@ import()
 
 type Message struct {
 	From	  string  `json:"from"`
-	Message   string  `json:"Message"`
+	Message   string  `json:"message"`
 }

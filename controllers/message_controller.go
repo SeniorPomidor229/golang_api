@@ -2,16 +2,13 @@ package controllers
 
 import (
 	"context"
-    "workspace/configs"
     "workspace/models"
     "workspace/responses"
     "net/http"
     "time"
   
-    "github.com/go-playground/validator/v10"
     "github.com/gofiber/fiber/v2"
     "go.mongodb.org/mongo-driver/bson/primitive"
-    "go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -22,13 +19,32 @@ func CreateMessage(c *fiber.Ctx) error{
 	var mess models.Message
 	defer cancel()
 
-	var user models.User
 	objId, _ := primitive.ObjectIDFromHex(userId)
 
-	err := userCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&user)
-	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(responses.UserResponse{ Status: http.StatusInternalServerError, Message: "eror", Data: &fiber.Map{"data": err.Error()}})
-	}	
+	if err := c.BodyParser(&mess); err != nil{
+		return c.Status(http.StatusBadRequest).JSON(responses.UserResponse{Status: http.StatusBadRequest, Message: "eror", Data: &fiber.Map{"data": err.Error()}})
+	}
 
-	update := bson.M{""}
+	message := bson.M{"from": mess.From, "message":mess.Message, }
+    update := bson.M{"answers": message}
+
+	result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$set":update})
+
+	if err != nil{
+		return c.Status(http.StatusInternalServerError).JSON(responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"data": err.Error()}})
+	}
+
+	var updatedUser models.User
+	if result.MatchedCount == 1{
+		err := userCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&updatedUser)
+
+		if err != nil {
+			return c.Status(http.StatusInternalServerError).JSON(responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"data": err.Error()}})
+		}
+	}
+
+	return c.Status(http.StatusOK).JSON(responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &fiber.Map{"data": updatedUser}})
 }
+
+
+
